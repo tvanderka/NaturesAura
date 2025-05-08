@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -54,7 +55,7 @@ public class PatchouliCompat implements ICompat {
         var manager = Minecraft.getInstance().level.getRecipeManager();
         var res = ResourceLocation.parse(name);
         var pre = ResourceLocation.fromNamespaceAndPath(res.getNamespace(), type + "/" + res.getPath());
-        return (T) manager.byKey(pre).orElse(null).value();
+        return (T) manager.byKey(pre).map(RecipeHolder::value).orElse(null);
     }
 
     public static IVariable ingredientVariable(Ingredient ingredient, HolderLookup.Provider registries) {
